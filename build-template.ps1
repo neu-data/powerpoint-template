@@ -147,7 +147,7 @@ $cl = $master.CustomLayouts.Add($master.CustomLayouts.Count + 1); $cl.Name = "Cl
 RemovePlaceholders $cl @($PH_TITLE, $PH_DATE, $PH_FOOTER)
 $cl.DisplayMasterShapes = 0
 $n = Ph $cl @($PH_SLIDENUM); if ($n) { StyleSlideNumber $n }
-AddLogo $cl 410 25 190 "Neudata logo large" | Out-Null
+AddLogo $cl (480 - 190 * $LOGO_RATIO / 2) 25 190 "Neudata logo large" | Out-Null   # centred
 $ch = $cl.Shapes.AddTextbox(1, 150, 232, 700, 30); $ch.Name = "Copyright heading"
 $r = $ch.TextFrame.TextRange; $r.Text = ("Copyright " + [char]0x00A9 + " Neudata, " + (Get-Date).Year)
 $r.Font.Name = $HEAD; $r.Font.Size = 20; $r.Font.Bold = -1; $r.Font.Color.RGB = $BLUE

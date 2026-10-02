@@ -1,4 +1,5 @@
-"""Write the Neudata theme (colours + fonts) into .pptx / .potx files.
+"""Write the Neudata theme (colours + fonts) into .pptx / .potx files
+and reset character spacing to normal.
 
 Usage: python set-theme.py file1.potx [file2.pptx ...]
 """
@@ -38,6 +39,9 @@ def patch_file(path: str) -> None:
             data = zin.read(item.filename)
             if re.fullmatch(r"ppt/theme/theme\d+\.xml", item.filename):
                 data = patch_theme(data.decode("utf-8")).encode("utf-8")
+            elif re.fullmatch(r"ppt/(slideMasters|slideLayouts|slides)/[^/]+\.xml", item.filename):
+                # Office's default master expands character spacing; reset it to normal
+                data = re.sub(rb'\sspc="-?\d+"', b"", data)
             zout.writestr(item, data)
     shutil.move(tmp, path)
     print(f"theme applied: {path}")
